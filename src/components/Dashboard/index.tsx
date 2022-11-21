@@ -1,5 +1,6 @@
 import { AvatarIcon, ProgressBar, ShareIcon } from "../../icons";
 import BalanceChart from "./BalanceChart";
+import CreateNFC from "./CreateNFC";
 import ScoreMeter from "./ScoreMeter";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
@@ -164,6 +165,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+            <CreateNFC />
           </div>
         </div>
         <div style={{ flex: 0.35 }}>
