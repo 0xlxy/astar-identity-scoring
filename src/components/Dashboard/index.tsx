@@ -2,6 +2,7 @@ import { AvatarIcon, ProgressBar, ShareIcon } from "../../icons";
 import BalanceChart from "./BalanceChart";
 import ScoreMeter from "./ScoreMeter";
 import Navbar from "../Navbar";
+import Footer from "../Footer";
 
 export default function Dashboard() {
   return (
@@ -169,6 +170,7 @@ export default function Dashboard() {
           <BalanceChart />
         </div>
       </div>
+      <Footer />
     </>
   );
 }
