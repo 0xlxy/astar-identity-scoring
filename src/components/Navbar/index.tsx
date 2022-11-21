@@ -37,11 +37,11 @@ export default function Navbar() {
       <div className='flex justify-between items-center' style={{ width: 248 }}>
         <img
           src='/brand-logo-mark.png'
-          alt='aster'
+          alt='astar'
           style={{ height: 36, width: 36 }}
         />
         <p className='text-xl font-semibold' style={{ color: '#221D3C' }}>
-          Aster Identity Scoring
+          Astar Identity Scoring
         </p>
       </div>
       <div className='flex'>
