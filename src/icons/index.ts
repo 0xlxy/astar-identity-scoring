@@ -1,4 +1,5 @@
 export { default as DashboardIcon } from './DashboardIcon'
+export { default as LeaderboardIcon } from './LeaderboardIcon'
 export { default as AvatarIcon } from './AvatarIcon'
 export { default as ETHIcon } from './ETHIcon'
 export { default as ShareIcon } from './ShareIcon'
