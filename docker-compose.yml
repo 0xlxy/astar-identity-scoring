@@ -1,0 +1,28 @@
+version: '3'
+services:
+  mongo:
+    restart: always
+    image: 'mongo:latest'
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: './server'
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+  client:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - /app/node_modules
+      - ./:/app
+
+volumes:
+  mongo-data:
+    driver: local
