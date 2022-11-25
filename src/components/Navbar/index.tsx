@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext, Context } from "react";
 import { Link } from "react-router-dom";
 import { DashboardIcon, LeaderboardIcon } from "../../icons";
 import StyledButton from "../Buttons/StyledButton";
@@ -10,8 +10,34 @@ declare global {
   }
 }
 
-export default function Navbar() {
-  const [address, setAddress] = useState("");
+export default function Navbar({
+  externalClickEvent,
+  walletContext,
+}: {
+  externalClickEvent: boolean;
+  walletContext: Context<
+    [
+      totalBalance: number,
+      setTotalBalance: React.Dispatch<React.SetStateAction<number>>,
+      walletAddress: string,
+      setAddress: React.Dispatch<React.SetStateAction<string>>,
+      walletConnected: boolean,
+      setWalletConnected: React.Dispatch<React.SetStateAction<boolean>>
+    ]
+  >;
+}) {
+  const [
+    _totalBalance,
+    _setTotalBalance,
+    address,
+    setAddress,
+    _walletConnected,
+    setWalletConnected,
+  ] = useContext(walletContext);
+
+  useEffect(() => {
+    if (externalClickEvent) connectWallet();
+  }, [externalClickEvent]);
 
   async function isConnected() {
     const accounts = await window.ethereum.request({ method: "eth_accounts" });
@@ -19,11 +45,8 @@ export default function Navbar() {
       accounts.length &&
       window.localStorage.getItem("walletConnected") === "true"
     ) {
-      var addr =
-        accounts[0].toString().substring(0, 6) +
-        "..." +
-        accounts[0].toString().substr(-6);
-      setAddress(addr.toUpperCase());
+      setAddress(accounts[0].toString());
+      setWalletConnected(true);
     }
   }
 
@@ -36,15 +59,15 @@ export default function Navbar() {
       var res = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      var addr =
-        res.toString().substring(0, 6) + "..." + res.toString().substr(-6);
-      setAddress(addr.toUpperCase());
+      setAddress(res[0]);
       window.localStorage.setItem("walletConnected", "true");
+      setWalletConnected(true);
     }
   };
   const disconnectWallet = async () => {
     setAddress("");
     window.localStorage.setItem("walletConnected", "false");
+    setWalletConnected(false);
   };
   return (
     <div
@@ -54,11 +77,12 @@ export default function Navbar() {
       <div className="flex justify-between items-center" style={{ width: 248 }}>
         <img
           src="/brand-logo-mark.png"
-          alt="astar"
+          alt="aster"
+          draggable={false}
           style={{ height: 36, width: 36 }}
         />
         <p className="text-xl font-semibold" style={{ color: "#221D3C" }}>
-          Astar Identity Scoring
+          Aster Identity Scoring
         </p>
       </div>
       <div className="flex">
@@ -115,7 +139,13 @@ export default function Navbar() {
         </Link>
         {address ? (
           <div onClick={disconnectWallet}>
-            <ConnectedWallet address={address} />
+            <ConnectedWallet
+              address={(
+                address.substring(0, 6) +
+                "..." +
+                address.substr(-6)
+              ).toUpperCase()}
+            />
           </div>
         ) : (
           <div onClick={connectWallet}>

@@ -1,8 +1,14 @@
 import { useEffect } from "react";
 
-export default function ScoreMeter() {
+export default function ScoreMeter({
+  id,
+  score,
+}: {
+  id: string;
+  score: number;
+}) {
   useEffect(() => {
-    var canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
+    var canvas = document.getElementById(id) as HTMLCanvasElement;
     var context = canvas.getContext("2d");
 
     // drawArcShadow   x    y   rad sAng eAng clockwise  line    fill
@@ -34,17 +40,28 @@ export default function ScoreMeter() {
       }
     }
 
+    var angle = score * 0.179 + 180;
+
     // drawArc   x    y   rad sAng eAng clockwise  line    fill
-    drawArc(180, 200, 80, 0, 180, true, "#c1634a", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 262, true, "#dfe7f0", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 264, true, "#e59636", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 287, true, "#dfe7f0", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 289, true, "#e8d932", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 301, true, "#dfe7f0", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 303, true, "#aecd9c", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 314, true, "#dfe7f0", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 316, true, "#8db872", "rgba(255, 255, 255, 0)");
-    drawArc(180, 200, 80, 0, 320, true, "#dfe7f0", "rgba(255, 255, 255, 0)");
+    drawArc(180, 200, 80, 0, 180, true, "#c1634a", "rgba(255, 255, 255, 0)"); //red
+
+    if (angle > 242) {
+      drawArc(180, 200, 80, 0, 242, true, "#dfe7f0", "rgba(255, 255, 255, 0)"); // gray
+      drawArc(180, 200, 80, 0, 244, true, "#e59636", "rgba(255, 255, 255, 0)"); // orange
+    }
+    if (angle > 270) {
+      drawArc(180, 200, 80, 0, 270, true, "#dfe7f0", "rgba(255, 255, 255, 0)"); // gray
+      drawArc(180, 200, 80, 0, 272, true, "#e8d932", "rgba(255, 255, 255, 0)"); // yellow
+    }
+    if (angle > 285) {
+      drawArc(180, 200, 80, 0, 285, true, "#dfe7f0", "rgba(255, 255, 255, 0)"); // gray
+      drawArc(180, 200, 80, 0, 287, true, "#aecd9c", "rgba(255, 255, 255, 0)"); // gray green
+    }
+    if (angle > 305) {
+      drawArc(180, 200, 80, 0, 305, true, "#dfe7f0", "rgba(255, 255, 255, 0)"); // gray
+      drawArc(180, 200, 80, 0, 307, true, "#8db872", "rgba(255, 255, 255, 0)"); // green
+    }
+    drawArc(180, 200, 80, 0, angle, true, "#dfe7f0", "rgba(255, 255, 255, 0)"); // gray
 
     function drawArc(
       xPos: number,
@@ -71,12 +88,37 @@ export default function ScoreMeter() {
         context.stroke();
       }
     }
-  }, []);
+  }, [score]);
+
+  const formatScore = (score: number) => {
+    if (score < 10) return `00${score}`;
+    else if (score < 100) return `0${score}`;
+    else return Number(score).toString();
+  };
+
+  const getDate = () => {
+    const date = new Date();
+    const formattedDate = date
+      .toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(/ /g, " ");
+    return formattedDate;
+  };
 
   return (
-    <div style={{ backgroundColor: "transparent", height: 135, width: 180 }}>
+    <div
+      style={{
+        backgroundColor: "transparent",
+        height: 135,
+        width: 180,
+        overflow: "hidden",
+      }}
+    >
       <canvas
-        id="myCanvas"
+        id={id}
         style={{ position: "relative", top: -85, left: -93 }}
         height="350"
         width="400"
@@ -90,7 +132,7 @@ export default function ScoreMeter() {
           left: 65,
         }}
       >
-        658
+        {formatScore(score)}
       </p>
       <p
         style={{
@@ -106,7 +148,7 @@ export default function ScoreMeter() {
           padding: "2px 5px",
         }}
       >
-        14 Nov 2022
+        {getDate()}
       </p>
     </div>
   );

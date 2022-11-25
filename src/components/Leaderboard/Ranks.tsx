@@ -2,8 +2,9 @@ import { AvatarIcon } from "../../icons";
 
 export default function Ranks({
   name = "0x26BC...aDd731",
-  rank = 1,
-  score = 732,
+  rank = 0,
+  score = "732",
+  lable = "OG Score",
   userRank = false,
 }) {
   return (
@@ -25,7 +26,9 @@ export default function Ranks({
         }}
       >
         <div className="flex mr-4">
-          <p style={{ color: "#647693", fontSize: 18 }}>000</p>
+          <p style={{ color: "#647693", fontSize: 18, marginRight: 0.8 }}>
+            {rank < 10 ? "000" : "00"}
+          </p>
           <p style={{ fontWeight: 600, color: "#221D3C", fontSize: 18 }}>
             {rank}
           </p>
@@ -66,7 +69,7 @@ export default function Ranks({
         }}
       >
         <p style={{ color: "#647693", fontWeight: 200, marginRight: 10 }}>
-          MACRO Score:
+          {lable}:
         </p>
         <p style={{ fontWeight: 600, color: "#221D3C" }}>{score}</p>
       </div>

@@ -1,8 +1,9 @@
 import StyledButtton from "../Buttons/StyledButton";
 
-export default function CreateNFC() {
+export default function CreateNFC({ setConnectClickEvent }: any) {
   return (
     <div
+      className="pointer-events-auto"
       style={{
         display: "flex",
         flex: 0.5,
@@ -26,10 +27,12 @@ export default function CreateNFC() {
             width: 220,
           }}
         >
-          Verify ownership of your wallet to create an NFC and view your MACRO
-          Score.
+          Connect your MetaMask wallet before using any of these features.
         </p>
         <div
+          onClick={() => {
+            setConnectClickEvent(true);
+          }}
           style={{
             margin: "0 auto",
             width: "min-content",
@@ -37,7 +40,7 @@ export default function CreateNFC() {
             marginBottom: 12,
           }}
         >
-          <StyledButtton text="Create NFC" />
+          <StyledButtton text="Connect Wallet" />
         </div>
       </div>
     </div>
