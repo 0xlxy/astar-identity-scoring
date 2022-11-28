@@ -5,7 +5,7 @@ export const getBalances = async (address: string) => {
     var res = await axios.get(
       `https://api.n.xyz/api/v1/address/${address}/balances/fungibles?chainID=ethereum&filterDust=false&apikey=${process.env.NXYZ_API_KEY}`,
       {
-        timeout: 8000,
+        timeout: 60000,
       }
     );
     return { success: true, data: res.data };
@@ -29,7 +29,7 @@ export const getWalletInfo = async (
         .get(
           `https://api.covalenthq.com/v1/1/address/${address}/transactions_v2/?key=${process.env.COVALENT_API_KEY}&page-size=100000`,
           {
-            timeout: 8000,
+            timeout: 60000,
           }
         )
         .catch((_err) => {
@@ -42,7 +42,7 @@ export const getWalletInfo = async (
         .get(
           `https://api.n.xyz/api/v1/address/${address}/balances/nfts?chainID=ethereum&limit=100&apikey=${process.env.NXYZ_API_KEY}`,
           {
-            timeout: 8000,
+            timeout: 60000,
           }
         )
         .catch((_err) => {
@@ -56,7 +56,7 @@ export const getWalletInfo = async (
           .get(
             `https://api.covalenthq.com/v1/1/address/${address}/transfers_v2/?contract-address=${contractAddress}&key=${process.env.COVALENT_API_KEY}&page-size=100000`,
             {
-              timeout: 8000,
+              timeout: 60000,
             }
           )
           .catch((_err) => {
