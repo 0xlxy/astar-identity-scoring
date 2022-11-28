@@ -16,6 +16,8 @@ services:
       - ./server:/app
   client:
     stdin_open: true
+    depends_on:
+      - server
     build:
       dockerfile: Dockerfile
       context: ./
