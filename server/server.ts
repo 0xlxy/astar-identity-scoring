@@ -26,7 +26,7 @@ app.get("/api/balances/:walletAddress", async (_req, _res) => {
   var checkValidity = addressValidator(_req);
   if (!checkValidity.isValid) return _res.send(checkValidity.err);
 
-  var walletAddress: string = _req.params.walletAddress;
+  var walletAddress: string = _req.params.walletAddress.toLowerCase();
   var res = await getBalances(walletAddress);
   return _res.send(res);
 });
@@ -35,7 +35,7 @@ app.get("/api/walletInfo/:walletAddress", async (_req, _res) => {
   var checkValidity = addressValidator(_req);
   if (!checkValidity.isValid) return _res.send(checkValidity.err);
 
-  var walletAddress: string = _req.params.walletAddress;
+  var walletAddress: string = _req.params.walletAddress.toLowerCase();
   var user = await getUser(client, walletAddress);
   if (user?.timestamp + 600000 > new Date().valueOf())
     return _res.send({ success: true, data: user });
@@ -52,7 +52,7 @@ app.get("/api/ogRanking/:walletAddress", async (_req, _res) => {
   var checkValidity = addressValidator(_req);
   if (!checkValidity.isValid) return _res.send(checkValidity.err);
 
-  var walletAddress: string = _req.params.walletAddress;
+  var walletAddress: string = _req.params.walletAddress.toLowerCase();
   var res = await getOGRanking(client, walletAddress);
   return _res.send(res);
 });
@@ -61,7 +61,7 @@ app.get("/api/rankings/:walletAddress", async (_req, _res) => {
   var checkValidity = addressValidator(_req);
   if (!checkValidity.isValid) return _res.send(checkValidity.err);
 
-  var walletAddress: string = _req.params.walletAddress;
+  var walletAddress: string = _req.params.walletAddress.toLowerCase();
   var res = await getRankings(client, walletAddress);
   return _res.send(res);
 });
