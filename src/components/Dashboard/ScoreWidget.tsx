@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { WalletContext } from ".";
 import { ProgressBar, ShareIcon } from "../../icons";
 import ScoreMeter from "./ScoreMeter";
@@ -12,6 +12,7 @@ export default function ScoreWidget({
   name: string;
   score: number;
 }) {
+  const [isActive, setIsActive] = useState(false);
   const [
     _totalBalance,
     _setTotalBalance,
@@ -20,8 +21,14 @@ export default function ScoreWidget({
     walletConnected,
     _setWalletConnected,
   ] = useContext(WalletContext);
+
+  useEffect(() => {
+    if (score) setIsActive(true);
+  }, [score]);
+
   return (
     <div
+      className={isActive && walletConnected ? "" : "blur-sm"}
       style={{
         display: "flex",
         justifyContent: "space-between",
@@ -36,7 +43,6 @@ export default function ScoreWidget({
         margin: "0px 10px 20px 10px",
         borderRadius: 4,
       }}
-      className={walletConnected ? "" : "blur-sm"}
     >
       <div className="w-full">
         <div className="flex items-center justify-between w-full">
