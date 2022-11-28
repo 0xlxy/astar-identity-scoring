@@ -18,10 +18,12 @@ services:
     stdin_open: true
     build:
       dockerfile: Dockerfile
-      context: .
+      context: ./
     volumes:
       - /app/node_modules
       - ./:/app
+    ports:
+      - '80:80'
 
 volumes:
   mongo-data:
