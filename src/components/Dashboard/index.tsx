@@ -31,9 +31,9 @@ export default function Dashboard() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [connectClickEvent, setConnectClickEvent] = useState(false);
   const [scores, setScores] = useState({
-    ogScore: 0,
-    txnScore: 0,
-    nftScore: 0,
+    ogScore: 0.1,
+    txnScore: 0.1,
+    volatilityScore: 0.1,
   });
   const [ogRanking, setOgRanking] = useState({ ranking: 0, totalUsers: 10000 });
 
@@ -173,9 +173,9 @@ export default function Dashboard() {
             </div>
             <div className="flex" style={{ marginLeft: 10 }}>
               <ScoreWidget
-                canvasId="nftScore"
-                name={"NFT Collecting Score"}
-                score={scores.nftScore}
+                canvasId="volatilityScore"
+                name={"Holding Volatility Score"}
+                score={scores.volatilityScore}
               />
               {walletConnected ? (
                 <CreateNFC />

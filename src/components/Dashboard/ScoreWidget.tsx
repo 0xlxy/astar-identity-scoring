@@ -23,7 +23,7 @@ export default function ScoreWidget({
   ] = useContext(WalletContext);
 
   useEffect(() => {
-    if (score) setIsActive(true);
+    if (score != 0.1) setIsActive(true);
   }, [score]);
 
   return (

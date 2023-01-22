@@ -10,8 +10,8 @@ function BalanceTab({
 }: {
   symbol: string;
   imageURI: string;
-  balance: string;
-  balanceInUSD: string;
+  balance: number;
+  balanceInUSD: number;
   value: number;
 }) {
   return (
@@ -19,11 +19,23 @@ function BalanceTab({
       className="flex items-center bg-white p-4 mr-4"
       style={{ border: "1px solid #E0E5EC", borderRadius: 4 }}
     >
-      <img src={imageURI} alt="icon" style={{ width: 40, height: 40 }} />
+      <img
+        src={imageURI}
+        alt="icon"
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null;
+          currentTarget.src =
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+        }}
+        style={{ width: 40, height: 40 }}
+      />
       <div className="w-full ml-4">
         <div className="flex justify-between">
           <p style={{ fontSize: 18 }}>{symbol}</p>
-          <p className="font-semibold">${balanceInUSD}</p>
+          <p className="font-semibold">
+            $
+            {Intl.NumberFormat("en-US").format(Number(balanceInUSD.toFixed(3)))}
+          </p>
         </div>
         <div className="flex justify-between">
           <div className="flex">
@@ -47,7 +59,7 @@ function BalanceTab({
               top: -2,
             }}
           >
-            {balance}
+            {Intl.NumberFormat("en-US").format(Number(balance.toFixed(2)))}
           </p>
         </div>
       </div>
@@ -78,8 +90,7 @@ export default function BalanceChart() {
             setWalletBalances(response.data);
             var totalBalance = 0;
             for (var d of response.data) {
-              if (d["fiat"] && d["fiat"][0])
-                totalBalance += d["fiat"][0]["tokenValue"];
+              if (d["quote"]) totalBalance += d["quote"];
               setTotalBalance(totalBalance);
             }
           }
@@ -103,18 +114,15 @@ export default function BalanceChart() {
       </div>
       <>
         {walletBalances.map((data) => {
-          if (data["fiat"] && data["fiat"][0]) {
+          if (data["type"] === "cryptocurrency") {
             return (
               <BalanceTab
-                key={data["symbol"]}
-                symbol={data["symbol"]}
-                imageURI={
-                  ((data["symbolLogos"] || [])[0] || {})["URI"] ||
-                  "https://c.neevacdn.net/image/upload/tokenLogos/ethereum/ethereum.png"
-                }
-                balance={data["pretty"]}
-                balanceInUSD={data["fiat"][0]["pretty"]}
-                value={data["fiat"][0]["tokenValue"] / data["tokenValue"]}
+                key={data["contract_ticker_symbol"]}
+                symbol={data["contract_ticker_symbol"]}
+                imageURI={data["logo_url"]}
+                balance={Number(data["balance"]) / 1e18}
+                balanceInUSD={data["quote"] || 0}
+                value={data["quote_rate"] || 0}
               />
             );
           }

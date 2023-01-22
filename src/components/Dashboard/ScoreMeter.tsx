@@ -91,7 +91,8 @@ export default function ScoreMeter({
   }, [score]);
 
   const formatScore = (score: number) => {
-    if (score < 10) return `00${score}`;
+    if (score === 0.1) return "000";
+    else if (score < 10) return `00${score}`;
     else if (score < 100) return `0${score}`;
     else return Number(score).toString();
   };

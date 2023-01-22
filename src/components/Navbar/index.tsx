@@ -51,8 +51,37 @@ export default function Navbar({
   }
 
   useEffect(() => {
-    isConnected();
+    (async () => {
+      if (window.ethereum.networkVersion !== 592) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x250" }],
+          });
+        } catch (err: any) {
+          if (err.code === 4902) {
+            await addAsterNetwork();
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x250" }],
+            });
+          }
+        }
+      }
+      isConnected();
+    })();
   }, []);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", () => {
+        window.location.reload();
+      });
+      window.ethereum.on("accountsChanged", () => {
+        window.location.reload();
+      });
+    }
+  });
 
   const connectWallet = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -69,6 +98,28 @@ export default function Navbar({
     window.localStorage.setItem("walletConnected", "false");
     setWalletConnected(false);
   };
+
+  const addAsterNetwork = async () => {
+    try {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: "0x250",
+            rpcUrls: ["https://evm.astar.network"],
+            chainName: "Astar Network Mainnet",
+            nativeCurrency: {
+              name: "ASTR",
+              symbol: "ASTR",
+              decimals: 18,
+            },
+            blockExplorerUrls: ["https://blockscout.com/astar"],
+          },
+        ],
+      });
+    } catch {}
+  };
+
   return (
     <div
       className="flex justify-between items-center px-5 py-4"

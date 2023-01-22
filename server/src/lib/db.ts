@@ -10,7 +10,7 @@ function getRankAndScoreFromIndex(data: any[], walletAddress: string) {
         ranking: i + 1,
         ogScore: data[i].ogScore,
         txnScore: data[i].txnScore,
-        nftScore: data[i].nftScore,
+        volatilityScore: data[i].volatilityScore,
       };
     }
   }
@@ -55,12 +55,12 @@ export async function getRankings(client: MongoClient, walletAddress: string) {
       .sort({ txnScore: -1 });
     const txnScoreRes = await txnScoreCursor.toArray();
 
-    const nftScoreCursor = client
+    const volatilityScoreCursor = client
       .db("RANKINGS")
       .collection("RANKINGS")
       .find()
-      .sort({ nftScore: -1 });
-    const nftScoreRes = await nftScoreCursor.toArray();
+      .sort({ volatilityScore: -1 });
+    const volatilityScoreRes = await volatilityScoreCursor.toArray();
 
     return {
       success: true,
@@ -75,10 +75,10 @@ export async function getRankings(client: MongoClient, walletAddress: string) {
           totalUsers: txnScoreRes.length,
           topRankings: txnScoreRes.slice(0, 99),
         },
-        nftScoreRankings: {
-          user: getRankAndScoreFromIndex(nftScoreRes, walletAddress),
-          totalUsers: nftScoreRes.length,
-          topRankings: nftScoreRes.slice(0, 99),
+        volatilityScoreRankings: {
+          user: getRankAndScoreFromIndex(volatilityScoreRes, walletAddress),
+          totalUsers: volatilityScoreRes.length,
+          topRankings: volatilityScoreRes.slice(0, 99),
         },
       },
     };
@@ -106,7 +106,7 @@ export async function updateRanking(
     walletAddress: string;
     ogScore: number;
     txnScore: number;
-    nftScore: number;
+    volatilityScore: number;
   }
 ) {
   try {
@@ -121,3 +121,4 @@ export async function updateRanking(
     return {};
   }
 }
+

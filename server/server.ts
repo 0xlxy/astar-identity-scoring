@@ -42,7 +42,7 @@ app.get("/api/walletInfo/:walletAddress", async (_req, _res) => {
   var res = await getBalances(walletAddress);
   if (!res.success) return res;
   var contractAddresses = [];
-  for (var d of res.data) contractAddresses.push(d.contractAddress);
+  for (var d of res.data) contractAddresses.push(d.contract_address);
   var response = await getWalletInfo(walletAddress, contractAddresses);
   if (response.success) updateRanking(client, response.data);
   return _res.send(response);

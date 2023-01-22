@@ -35,17 +35,17 @@ export default function Leaderboard() {
   });
   const [rankings, setRankings] = useState({
     ogScoreRankings: {
-      user: { ranking: 0, ogScore: 0, txnScore: 0, nftScore: 0 },
+      user: { ranking: 0, ogScore: 0, txnScore: 0, volatilityScore: 0 },
       totalUsers: 0,
       topRankings: [],
     },
     txnScoreRankings: {
-      user: { ranking: 0, ogScore: 0, txnScore: 0, nftScore: 0 },
+      user: { ranking: 0, ogScore: 0, txnScore: 0, volatilityScore: 0 },
       totalUsers: 0,
       topRankings: [],
     },
-    nftScoreRankings: {
-      user: { ranking: 0, ogScore: 0, txnScore: 0, nftScore: 0 },
+    volatilityScoreRankings: {
+      user: { ranking: 0, ogScore: 0, txnScore: 0, volatilityScore: 0 },
       totalUsers: 0,
       topRankings: [],
     },
@@ -60,17 +60,17 @@ export default function Leaderboard() {
   useEffect(() => {
     setRankings({
       ogScoreRankings: {
-        user: { ranking: 0, ogScore: 0, txnScore: 0, nftScore: 0 },
+        user: { ranking: 0, ogScore: 0, txnScore: 0, volatilityScore: 0 },
         totalUsers: 0,
         topRankings: [],
       },
       txnScoreRankings: {
-        user: { ranking: 0, ogScore: 0, txnScore: 0, nftScore: 0 },
+        user: { ranking: 0, ogScore: 0, txnScore: 0, volatilityScore: 0 },
         totalUsers: 0,
         topRankings: [],
       },
-      nftScoreRankings: {
-        user: { ranking: 0, ogScore: 0, txnScore: 0, nftScore: 0 },
+      volatilityScoreRankings: {
+        user: { ranking: 0, ogScore: 0, txnScore: 0, volatilityScore: 0 },
         totalUsers: 0,
         topRankings: [],
       },
@@ -113,19 +113,19 @@ export default function Leaderboard() {
         name: "Txn. Score",
         score: rankings.txnScoreRankings.user.txnScore,
       });
-    } else if (sortBy === "nftScore") {
+    } else if (sortBy === "volatilityScore") {
       var rank: any;
-      for (rank of rankings.nftScoreRankings.topRankings) {
+      for (rank of rankings.volatilityScoreRankings.topRankings) {
         leaderboard.push({
-          name: "NFT Score",
+          name: "Holding Volatility Score",
           walletAddress: rank.walletAddress,
-          score: rank.nftScore,
+          score: rank.volatilityScore,
         });
       }
       setUserRank({
-        rank: rankings.nftScoreRankings.user.ranking,
-        name: "NFT Score",
-        score: rankings.nftScoreRankings.user.nftScore,
+        rank: rankings.volatilityScoreRankings.user.ranking,
+        name: "Holding Volatility Score",
+        score: rankings.volatilityScoreRankings.user.volatilityScore,
       });
     }
     setLeaderboard(leaderboard);
@@ -265,13 +265,15 @@ export default function Leaderboard() {
             <div className="flex justify-between">
               <div>
                 <p style={{ color: "#647693", fontSize: 14, marginTop: 18 }}>
-                  Your NFT Score
+                  Your Holding Volatility Score
                 </p>
                 <div className="flex">
                   <p
                     style={{ fontWeight: 600, color: "#221D3C", fontSize: 22 }}
                   >
-                    {formatScore(rankings.nftScoreRankings.user.nftScore)}
+                    {formatScore(
+                      rankings.volatilityScoreRankings.user.volatilityScore
+                    )}
                   </p>
                 </div>
                 <p style={{ color: "#647693", fontSize: 14, marginTop: 8 }}>
@@ -286,7 +288,7 @@ export default function Leaderboard() {
                       paddingRight: 4,
                     }}
                   >
-                    {rankings.nftScoreRankings.user.ranking}
+                    {rankings.volatilityScoreRankings.user.ranking}
                   </p>
                   <p
                     style={{
@@ -296,7 +298,7 @@ export default function Leaderboard() {
                       top: -4,
                     }}
                   >
-                    of {rankings.nftScoreRankings.totalUsers}
+                    of {rankings.volatilityScoreRankings.totalUsers}
                   </p>
                 </div>
               </div>
@@ -348,7 +350,9 @@ export default function Leaderboard() {
                   >
                     <option value="ogScore">Sort by OG Score</option>
                     <option value="txnScore">Sort by Txn. Score</option>
-                    <option value="nftScore">Sort by NFT Score</option>
+                    <option value="volatilityScore">
+                      Sort by Holding Volatility Score
+                    </option>
                   </select>
                 </div>
               </div>
